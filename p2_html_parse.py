@@ -22,6 +22,7 @@ soup = BeautifulSoup(page2.content, 'html.parser')
 
 voivoidship_counter = 0
 td_count = 0
+file = open("testfile.txt","w")
 
 t = soup.find('table', 'wikitable')
 for tr in t.find_all('tr'):
@@ -31,8 +32,12 @@ for tr in t.find_all('tr'):
         if td_count == 2:
             voivoidship_counter = voivoidship_counter + 1
             print(td.text)
+            file.write("<item>")
+            file.write(td.text)
+            file.write("</item>\n")
     #print("td count: " + str(td_count))
 print("voivoidship counter: " + str(voivoidship_counter))
+file.close()
 
 
 
