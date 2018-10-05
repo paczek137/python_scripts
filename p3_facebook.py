@@ -63,12 +63,14 @@ driver.execute_script("window.scrollTo(0, 500);")
 #time.sleep(5)
 #p = driver.find_element_by_xpath("//textarea[@name='message']")
 p = driver.find_element_by_name('xhpc_message_text')
+#p.screenshot('C:\git\python\python_scripts\p1.png')
 
-p.send_keys('Hi 6')
+p.send_keys('paczek test4')
 
-time.sleep(3)
+time.sleep(1)
 element = WebDriverWait(driver, 30).until(expected_conditions.element_to_be_clickable((By.XPATH, '//button/span[.=\"Post\"]')))
 #element = WebDriverWait(driver, 30).until(expected_conditions.element_to_be_clickable((By.XPATH, "//span[text()='Post']")))
+element.screenshot('C:\git\python\python_scripts\p2.png')
 
 element.click()
 
