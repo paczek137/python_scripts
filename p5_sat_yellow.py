@@ -40,10 +40,32 @@ def find_big_yellow(drv):
             # print(el.find_element_by_xpath("..").get_attribute('style'))
             if "font-size" in el.find_element_by_xpath("..").get_attribute('style'):
                 # print(el.text)
-                if len(el.text) < 20:
+                if len(el.text) < 10:
                     s = 'Found Code => ' + el.text + ' in URL:  ' + drv.current_url
                     append_to_file(s)
                     #code.append(el.text)
+
+def find_big_yellow2(drv):
+    global driver
+    y = driver.find_elements_by_xpath("//span[@style='color: yellow']")
+    if len(y) > 0:
+
+        for el in y:
+            # print(el.text)
+            # print(el.find_element_by_xpath("..").get_attribute('style'))
+            if "font-size" in el.find_element_by_xpath("..").get_attribute('style'):
+                # print(el.text)
+                if len(el.text) < 10:
+                    s = 'Found Code => ' + el.text + ' in URL:  ' + driver.current_url
+                    append_to_file(s)
+                    #code.append(el.text)
+    y = driver.find_elements_by_xpath("//span[@style='font-size: 18px; line-height: normal']")
+    if len(y) > 0:
+        for el in y:
+            if "color: yellow" in el.find_element_by_xpath("..").get_attribute('style'):
+                if len(el.text) < 10:
+                    s = "Found Code => " + el.text + " in URL: " + driver.current_url
+                    append_to_file(s)
 
 def find_only_yellow(drv):
     #time.sleep(2)
@@ -98,8 +120,25 @@ def find_last_page_in_a_href(drv, code):
         find_only_yellow(drv)
         #find_big_yellow(drv, code)
 
+def driver_restart(drv):
+    global driver
+    driver.delete_all_cookies()
+    driver.close()
+    driver = webdriver.Firefox(firefox_profile=fp)
+    driver.set_page_load_timeout(30)
+    return driver
+
 def login_to_sat(drv):
-    driver.get("http://satedu.2ap.pl/login.php")
+    global driver
+    try:
+        driver.get("http://satedu.2ap.pl/login.php")
+    except TimeoutException as ex:
+        s = "Timeout exception " + str(ex) + " at " + driver.current_url
+        append_to_file(s)
+        # reset the driver
+        driver_restart(drv)
+        login_to_sat(driver)
+
     append_to_file("Opened sat-edu")
     driver.maximize_window()
 
@@ -131,6 +170,7 @@ fp.set_preference("dom.webnotifications.enabled", False)
 
 
 driver = webdriver.Firefox(firefox_profile=fp)
+driver.set_page_load_timeout(30)
 login_to_sat(driver)
 
 code_list = []
@@ -139,10 +179,15 @@ code_list = []
 #driver.get("http://satedu.2ap.pl/viewtopic.php?t=21941")
 #driver.get("http://satedu.2ap.pl/viewtopic.php?t=3260")
 
-driver.set_page_load_timeout(30)
+#driver.get("http://satedu.2ap.pl/viewtopic.php?t=21941") #KON
+#find_big_yellow2(driver)
+#driver.get("http://satedu.2ap.pl/viewtopic.php?t=19516") #+ SAT
+#find_big_yellow2(driver)
+
+
 
 #file = open("log\\yellows.txt", "r")
-file = open("log\\yellows_SAT.txt", "r")
+file = open("log\\all_yellows_SAT_URL_with_large_font.txt", "r")
 for idx, line in enumerate(file):
     print(line)
     try:
@@ -155,10 +200,17 @@ for idx, line in enumerate(file):
         driver = webdriver.Firefox(firefox_profile=fp)
         login_to_sat(driver)
     #driver.get(line)
-    find_big_yellow(driver)
+
+    #if "font-size: 18px" in driver.page_source:
+    #    s = 'Found Code =>  in URL:  ' + driver.current_url
+    #    append_to_file(s)
+
+    #find_big_yellow(driver)
     #find_SAT(driver)
+    find_big_yellow2(driver)
 
 driver.quit()
+
 
 '''
 
