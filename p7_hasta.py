@@ -4,6 +4,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
+from tkinter import messagebox
 
 s = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
 s = s + "\np7_html_parse.py"
@@ -106,3 +107,4 @@ parse_timetables(driver)
 #parse_timetables2(driver)
 
 driver.quit()
+messagebox.showinfo("Hasta La Vista", "No free courts")
