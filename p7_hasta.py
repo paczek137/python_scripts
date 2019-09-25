@@ -5,10 +5,19 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 from tkinter import messagebox
+from seleniumrequests import Firefox
 
 s = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
 s = s + "\np7_html_parse.py"
 print(s)
+
+#webdriver = Firefox()
+#webdriver.set_page_load_timeout(20)
+#driver.get("http://hastalavista.pl/online/rezerwacje/")
+#operacja=ShowRezerwacjeTable&action=ShowRezerwacjeTable&data=2019-05-26&obiekt_typ=squash&godz_od=&godz_do=
+#response = webdriver.request('POST', "http://hastalavista.pl/online/rezerwacje/", data={"operacja": "ShowRezerwacjeTable"})
+#print(response)
+#exit()
 
 def get_real_court_number(num):
     if num >= 1 and num < 23:
