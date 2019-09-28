@@ -8,9 +8,11 @@ import datetime
 import random
 import discord
 from discord.ext import commands, tasks
+import os
+import p11_facebook_parser as wagon
 
 s = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
-s = s + "\np9_discord_bot.py"
+s = s + "\n" + os.path.basename(__file__)
 print(s)
 
 client = commands.Bot(command_prefix= '.')
@@ -42,4 +44,9 @@ async def send_msg(ctx):
 async def check(ctx):
     await ctx.send(f'Hi {ctx.author}')
 
-client.run('NjI2NTIxNzYxNTk2NTcxNjUw.XYvWVw.uUJ1JGMyNFFT-6eXX3Acra1Gxzs')
+@client.command()
+async def wagon(ctx):
+    menu = wagon.wagon_find_menu()
+    await ctx.send(f' Wagonowa menu:')
+
+client.run('NjI2NTIxNzYxNTk2NTcxNjUw.XY6dag.I2O69wIf9VKEHIgv7t7RupcdIXQ')
