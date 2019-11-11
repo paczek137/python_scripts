@@ -3,12 +3,14 @@
 #  Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
 #  Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
 #  Vestibulum commodo. Ut rhoncus gravida arcu.
-
+import concurrent
 import datetime
 import random
 import discord
 from discord.ext import commands, tasks
 import os
+import asyncio
+from concurrent.futures import ProcessPoolExecutor
 import p11_facebook_parser as wagon
 
 s = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
@@ -18,7 +20,7 @@ print(s)
 client = commands.Bot(command_prefix= '.')
 
 @client.event
-async def on_read():
+async def on_ready():
     print("Bot is ready")
 
 @client.command()
@@ -44,9 +46,13 @@ async def send_msg(ctx):
 async def check(ctx):
     await ctx.send(f'Hi {ctx.author}')
 
-@client.command()
+@client.command(pass_context=True)
 async def wagon(ctx):
-    menu = wagon.wagon_find_menu()
-    await ctx.send(f' Wagonowa menu:')
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=3)
+    loop = asyncio.get_event_loop()
+    menu = await loop.run_in_executor(executor, wagon.wagon_find_menu)
+    #result = await sync_to_async(get_chat_id)("django")
+    #menu = wagon.wagon_find_menu()
+    await ctx.send(f' Wagonowa menu:' + menu)
 
-client.run('NjI2NTIxNzYxNTk2NTcxNjUw.XY6dag.I2O69wIf9VKEHIgv7t7RupcdIXQ')
+client.run('NjI2NTIxNzYxNTk2NTcxNjUw.XZKKTQ.6nFzoJCeI1xZWHEHMlqj_ni8eh4')

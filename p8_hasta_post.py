@@ -1,5 +1,7 @@
 import datetime, requests, time
 from bs4 import BeautifulSoup
+import ctypes
+import winsound
 
 s = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
 s = s + "\np8_hasta_post.py"
@@ -49,7 +51,7 @@ cookie = "obiekt_typa=squash; qtrans_cookie_test=1; godz_od=15%3A00; godz_do=00%
 test_url = "https://httpbin.org/post"
 url_php = "http://hastalavista.pl/wp-admin/admin-ajax.php"
 form = {'operacja': 'ShowRezerwacjeTable', 'action': 'ShowRezerwacjeTable',
-        'data': '2019-06-12', 'obiekt_typ': 'squash',
+        'data': '2019-11-13', 'obiekt_typ': 'squash',
         'godz_od': '15:00', 'godz_do': '00:00'}
 
 
@@ -65,5 +67,9 @@ r = s.post(url_php, data=form)
 #f.write(r.content)
 #f.close()
 
-courts = parse_timetables2(r.content, "20:00")
+courts = parse_timetables2(r.content, "20:30")
 print(courts)
+if len(courts) > 0:
+    print("OK")
+    winsound.MessageBeep()
+    ctypes.windll.user32.MessageBoxW(0, "Free courts: " + str(courts), "Alert", 0)
