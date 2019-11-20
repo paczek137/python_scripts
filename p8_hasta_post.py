@@ -67,9 +67,11 @@ r = s.post(url_php, data=form)
 #f.write(r.content)
 #f.close()
 
-courts = parse_timetables2(r.content, "20:30")
-print(courts)
+courts = parse_timetables2(r.content, "20:00")
+#print(courts)
 if len(courts) > 0:
     print("OK")
     winsound.MessageBeep()
     ctypes.windll.user32.MessageBoxW(0, "Free courts: " + str(courts), "Alert", 0)
+else:
+    print("No free courts found")

@@ -15,24 +15,24 @@ def wagon_find_menu():
     url = url_base + "Wagonowa"
     page = requests.get(url)
     soup = BeautifulSoup(page.content, "html.parser")
+    menu_text = ""
 
     spans = soup.find_all('span')
     for span in spans:
         if "ZUPA" in span.text:
             print("found!")
             zupa = span
+            link = zupa.find('a')
+            link = url_base + link['href'][1:]
+            print(link)
+
+            page2 = requests.get(link)
+            soup2 = BeautifulSoup(page2.content, "html.parser")
+            menu_text = soup2.title.text
+            print(menu_text)
             break
     #print(zupa.text)
-
-    link = zupa.find('a')
-    link = url_base + link['href'][1:]
-    print(link)
-
-    page2 = requests.get(link)
-    soup2 = BeautifulSoup(page2.content, "html.parser")
-    menu = soup2.title
-    print(menu.text)
-    return menu.text
+    return menu_text
 
 if __name__ == '__main__':
     wagon_find_menu()
