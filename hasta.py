@@ -133,15 +133,19 @@ def checkIfCourtsAreAdjacent(courts, number_of_courts=2):
     for comb in combinationList:
         firstCourt = comb[0]
         found = True
+        i=1
         for court in comb[1:]:
-            if not firstCourt.IsAdjacentToCourt(court):
+            if not any(court.IsAdjacentToCourt(alreadyCheckedCourt) for alreadyCheckedCourt in comb[:i]):
+            # if not firstCourt.IsAdjacentToCourt(court):
                 found = False
                 # print("failed to check " + str(firstCourt.id) + " and " + str(court.id))
                 break
             firstCourt = court
+            i = i + 1
         if found:
             listOfCourtSets.append(comb)
 
+    print("found " + str(len(listOfCourtSets)) + " sets")
     for courtSet in listOfCourtSets:
         s = ", ".join(str(c.id) for c in courtSet)
         print("Found set of " + str(number_of_courts) + " courts: " + s)
